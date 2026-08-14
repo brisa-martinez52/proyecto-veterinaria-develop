@@ -34,7 +34,7 @@
             foreach ($faqs as $index => $faq):
             ?>
                 <div class="card mb-20">
-                    <h3 style="color: #83d4d7; margin-bottom: 15px;">❓ <?php echo $faq[0]; ?></h3>
+                    <h3 style="color: #83d4d7; margin-bottom: 15px;"> <?php echo $faq[0]; ?></h3>
                     <p style="font-size: 16px; line-height: 1.6; color: #444;"><?php echo $faq[1]; ?></p>
                 </div>
             <?php endforeach; ?>
