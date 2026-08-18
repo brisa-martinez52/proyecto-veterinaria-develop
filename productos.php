@@ -102,7 +102,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         <div class="flex-between mb-20">
             <h1>Tienda de Productos</h1>
             <button onclick="toggleCarrito()" class="btn btn-primary" id="btnCarrito">
-                🛒 Carrito (<?php echo count($_SESSION['carrito']); ?>)
+                Carrito (<?php echo count($_SESSION['carrito']); ?>)
             </button>
         </div>
 

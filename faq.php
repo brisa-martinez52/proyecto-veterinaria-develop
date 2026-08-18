@@ -19,11 +19,11 @@
         <div style="max-width: 900px; margin: 0 auto;">
             <?php
             $faqs = [
-                ['¿Cómo puedo registrar a mi mascota?', 'Una vez registrado e iniciado sesión, ve a la sección "Mis Mascotas" y haz clic en "Agregar Mascota". Completa el formulario con los datos de tu compañero.'],
-                ['¿Cómo solicito un turno veterinario?', 'En la sección "Turnos" podrás seleccionar tu mascota, el veterinario de preferencia, la fecha y el horario disponible. Recibirás una confirmación instantánea.'],
+                ['¿Cómo puedo registrar a mi mascota?', 'Una vez registrado e iniciado sesión, ve a la sección "Mis Mascotas" y hace clic en "Agregar Mascota". Completa el formulario con los datos de tu compañero.'],
+                ['¿Cómo solicito un turno veterinario?', 'En la sección "Turnos" podrás seleccionar a tu mascota, el veterinario de preferencia, la fecha y el horario disponible. Recibirás una confirmación instantánea.'],
                 ['¿Puedo cancelar un turno?', 'Sí, puedes cancelar tus turnos desde la misma sección "Turnos". Los turnos activos tendrán un botón de "Cancelar" disponible.'],
                 ['¿Cómo accedo al historial médico de mi mascota?', 'En la sección "Historial Médico" selecciona tu mascota y podrás ver todos los registros de consultas, vacunas, tratamientos y estudios realizados.'],
-                ['¿Cómo realizo una compra en la tienda?', 'Navega por nuestros productos, agrégalos al carrito y cuando estés listo, haz clic en "Finalizar Compra". Debes estar registrado para completar la transacción.'],
+                ['¿Cómo realizo una compra en la tienda?', 'Navega por nuestros productos, agrégalos al carrito y cuando estés listo, haz clic en "Finalizar Compra". Tenes que estar registrado para completar la transacción.'],
                 ['¿Qué métodos de pago aceptan?', 'Actualmente aceptamos todos los medios de pago digitales. El sistema actualizará automáticamente el stock tras cada compra.'],
                 ['¿Los veterinarios pueden actualizar el historial?', 'Sí, nuestros veterinarios actualizan el historial médico de tu mascota después de cada consulta con diagnósticos, tratamientos y observaciones.'],
                 ['¿Cómo contacto a la clínica?', 'Puedes llamarnos al +54 299 123456 o visitarnos en Neuquén, Argentina. Nuestro horario de atención es de lunes a viernes de 9:00 a 18:00 hs.'],
