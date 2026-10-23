@@ -10,6 +10,10 @@ if (!isset($_SESSION['carrito'])) {
 
 // Agregar al carrito
 if (isset($_POST['agregar_carrito'])) {
+    if (!isLoggedIn()) {
+        redirect('login.php');
+    }
+
     $producto_id = $_POST['producto_id'];
 
     if (isset($_SESSION['carrito'][$producto_id])) {
@@ -53,7 +57,11 @@ if (isset($_POST['vaciar_carrito'])) {
 
 // Finalizar compra
 if (isset($_POST['finalizar_compra'])) {
-    if (isLoggedIn() && count($_SESSION['carrito']) > 0) {
+    if (!isLoggedIn()) {
+        redirect('login.php');
+    }
+
+    if (count($_SESSION['carrito']) > 0) {
         $usuario_id = $_SESSION['usuario_id'];
         $total = 0;
 
@@ -639,40 +647,50 @@ $categorias_result = mysqli_query($conn, $query_cat);
 
                 <!-- BOTÓN AGREGAR -->
 
-                <form method="POST">
+                <?php if ($producto['stock'] == 0): ?>
 
-                    <input type="hidden"
-                           name="producto_id"
-                           value="<?php echo $producto['id']; ?>">
-
-
-                    <button type="submit"
-                            name="agregar_carrito"
+                    <button type="button"
                             class="btn btn-primary btn-carrito"
-                            <?php echo $producto['stock'] == 0
-                                ? 'disabled'
-                                : ''; ?>>
+                            disabled>
 
+                        <i class="fa-solid fa-ban"></i>
 
-                        <?php if ($producto['stock'] == 0): ?>
+                        Sin Stock
 
-                            <i class="fa-solid fa-ban"></i>
+                    </button>
 
-                            Sin Stock
+                <?php elseif (isLoggedIn()): ?>
 
+                    <form method="POST">
 
-                        <?php else: ?>
+                        <input type="hidden"
+                               name="producto_id"
+                               value="<?php echo $producto['id']; ?>">
+
+                        <button type="submit"
+                                name="agregar_carrito"
+                                class="btn btn-primary btn-carrito">
 
                             <i class="fa-solid fa-cart-plus"></i>
 
                             Agregar al Carrito
 
-                        <?php endif; ?>
+                        </button>
 
+                    </form>
 
-                    </button>
+                <?php else: ?>
 
-                </form>
+                    <a href="login.php"
+                       class="btn btn-primary btn-carrito">
+
+                        <i class="fa-solid fa-right-to-bracket"></i>
+
+                        Inicia sesión para comprar
+
+                    </a>
+
+                <?php endif; ?>
 
 
             </div>
@@ -959,24 +977,40 @@ $categorias_result = mysqli_query($conn, $query_cat);
 
                     <!-- FINALIZAR COMPRA -->
 
-                    <button type="submit"
-                            name="finalizar_compra"
-                            class="btn btn-success"
-                            style="
-                                width: 100%;
-                                margin-bottom: 10px;
-                            "
-                            <?php echo !isLoggedIn()
-                                ? 'disabled'
-                                : ''; ?>>
+                    <?php if (isLoggedIn()): ?>
 
-                        <i class="fa-solid fa-credit-card"></i>
+                        <button type="submit"
+                                name="finalizar_compra"
+                                class="btn btn-success"
+                                style="
+                                    width: 100%;
+                                    margin-bottom: 10px;
+                                ">
 
-                        <?php echo isLoggedIn()
-                            ? 'Finalizar Compra'
-                            : 'Inicia sesión para comprar'; ?>
+                            <i class="fa-solid fa-credit-card"></i>
 
-                    </button>
+                            Finalizar Compra
+
+                        </button>
+
+                    <?php else: ?>
+
+                        <a href="login.php"
+                           class="btn btn-success"
+                           style="
+                               display: block;
+                               width: 100%;
+                               margin-bottom: 10px;
+                               text-align: center;
+                           ">
+
+                            <i class="fa-solid fa-right-to-bracket"></i>
+
+                            Inicia sesión para comprar
+
+                        </a>
+
+                    <?php endif; ?>
 
 
                     <!-- VACIAR CARRITO -->
