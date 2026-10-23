@@ -118,7 +118,7 @@ INSERT INTO veterinarios (nombre, apellido, especialidad, telefono) VALUES
 -- Insertar Productos
 INSERT INTO productos (nombre, descripcion, precio, stock, categoria, imagen_url) VALUES
 ('Alimento Perro Adulto', 'Alimento balanceado premium para perros adultos 15kg', 25000.00, 50, 'Alimentos', 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400'),
-('Alimento Gato Adulto', 'Alimento balanceado premium para gatos adultos 10kg', 18000.00, 40, 'Alimentos', 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=400'),
+('Alimento Gato Adulto', 'Alimento balanceado para perros', 18000.00, 40, 'Alimentos', 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=400'),
 ('Collar Antipulgas', 'Collar antipulgas y garrapatas de larga duración', 5000.00, 100, 'Accesorios', 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400'),
 ('Juguete Interactivo', 'Juguete interactivo para mascotas con dispensador de premios', 3500.00, 75, 'Juguetes', 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400'),
 ('Cama Ortopédica', 'Cama ortopédica con memoria para mascotas grandes', 12000.00, 30, 'Accesorios', 'Imagenes/foto-shampoo.png'),
