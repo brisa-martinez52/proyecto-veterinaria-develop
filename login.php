@@ -75,9 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div style="margin-top: 30px; text-align: center;">
                 <p>¿No tienes cuenta? <a href="register.php" style="color: #83d4d7; font-weight: bold;">Regístrate aquí</a></p>
-                <p style="background-color: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 10px; margin-top: 15px; font-size: 13px; color: #856404; font-weight: bold;">
-                    🔑 Admin: DNI="admin" | Contraseña="admin123"
-                </p>
             </div>
         </div>
     </div>
