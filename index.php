@@ -9,7 +9,7 @@ require_once 'includes/config.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veterinaria Patitas - Inicio</title>
 
-    <link rel="stylesheet" href="css/estilos.css?v=202607011">
+    <link rel="stylesheet" href="css/estilos.css?v=20261031">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -289,7 +289,7 @@ require_once 'includes/config.php';
                     <?php if(!isLoggedIn()): ?>
 
                         <a href="login.php">
-                            <button class="btn btn-primary"
+                            <button class="btn btn-primary btn-inicio-acceso"
                                     style="
                                         width: 300px;
                                         padding: 18px 40px;
@@ -302,7 +302,7 @@ require_once 'includes/config.php';
 
 
                         <a href="register.php">
-                            <button class="btn btn-success"
+                            <button class="btn btn-success btn-inicio-acceso"
                                     style="
                                         width: 300px;
                                         padding: 18px 40px;
@@ -315,12 +315,11 @@ require_once 'includes/config.php';
 
 
                         <a href="login.php">
-                            <button class="btn btn-danger"
+                            <button class="btn btn-danger btn-ingreso-admin btn-inicio-acceso"
                                     style="
                                         width: 300px;
                                         padding: 18px 40px;
                                         font-size: 18px;
-                                        background-color: #ff9999;
                                     ">
                                 <i class="fa-solid fa-user-shield"></i>
                                 Ingreso Administrador
