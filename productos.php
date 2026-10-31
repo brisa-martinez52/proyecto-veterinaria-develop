@@ -334,12 +334,19 @@ $categorias_result = mysqli_query($conn, $query_cat);
         .btn-carrito {
             width: 100%;
             margin-top: 18px;
+            box-sizing: border-box;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
             gap: 8px;
+        }
+
+        .btn-login-compra {
+            box-sizing: border-box;
+            padding: 10px 12px;
+            font-size: 14px;
         }
 
 
@@ -682,7 +689,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
                 <?php else: ?>
 
                     <a href="login.php"
-                       class="btn btn-primary btn-carrito">
+                       class="btn btn-primary btn-carrito btn-login-compra">
 
                         <i class="fa-solid fa-right-to-bracket"></i>
 
@@ -996,7 +1003,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
                     <?php else: ?>
 
                         <a href="login.php"
-                           class="btn btn-success"
+                           class="btn btn-success btn-login-compra"
                            style="
                                display: block;
                                width: 100%;
