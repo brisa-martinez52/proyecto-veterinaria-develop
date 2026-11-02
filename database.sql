@@ -60,6 +60,7 @@ CREATE TABLE turnos (
     veterinario_id INT NOT NULL,
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
+    aviso_admin TEXT,
     estado ENUM('activo', 'cancelado', 'completado') DEFAULT 'activo',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
@@ -90,6 +91,7 @@ CREATE TABLE compra_items (
 -- Tabla Historial Médico
 CREATE TABLE historial_medico (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    turno_id INT UNIQUE,
     mascota_id INT NOT NULL,
     veterinario_id INT NOT NULL,
     fecha DATE NOT NULL,
@@ -100,6 +102,7 @@ CREATE TABLE historial_medico (
     peso DECIMAL(5,2) NOT NULL,
     observaciones TEXT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (turno_id) REFERENCES turnos(id) ON DELETE SET NULL,
     FOREIGN KEY (mascota_id) REFERENCES mascotas(id) ON DELETE CASCADE,
     FOREIGN KEY (veterinario_id) REFERENCES veterinarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

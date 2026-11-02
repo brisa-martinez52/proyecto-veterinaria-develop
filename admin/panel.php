@@ -3,6 +3,16 @@ require_once '../includes/config.php';
 requireAdmin();
 
 $tab = isset($_GET['tab']) ? $_GET['tab'] : 'stats';
+$hoy = date('Y-m-d');
+$fecha_minima_turno = date('Y-m-d', strtotime('tomorrow'));
+$turno_error = '';
+$turno_success = '';
+$veterinario_error = '';
+$veterinario_success = '';
+$turnos_actualizados = mysqli_query($conn, "UPDATE turnos SET estado='completado' WHERE estado='activo' AND fecha < '$hoy'");
+if (!$turnos_actualizados) {
+    $turno_error = 'No se pudieron actualizar los estados de los turnos vencidos.';
+}
 $producto_error = '';
 $producto_edicion_id = null;
 $modo_edicion_producto = false;
@@ -15,6 +25,135 @@ $producto_form_values = [
     'descripcion' => '',
     'imagen_url' => ''
 ];
+
+// Reprogramar turno y comunicar el cambio al cliente
+if (isset($_POST['actualizar_turno'])) {
+    $turno_id = filter_var($_POST['turno_id'] ?? '', FILTER_VALIDATE_INT);
+    $fecha_turno = $_POST['fecha_turno'] ?? '';
+    $hora_turno = $_POST['hora_turno'] ?? '';
+    $aviso_admin = trim((string)($_POST['aviso_admin'] ?? ''));
+    $fecha_valida = is_string($fecha_turno)
+        && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_turno)
+        && checkdate((int)substr($fecha_turno, 5, 2), (int)substr($fecha_turno, 8, 2), (int)substr($fecha_turno, 0, 4))
+        && $fecha_turno > $hoy;
+    $hora_valida = is_string($hora_turno) && preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $hora_turno);
+
+    if ($turno_id === false || $turno_id < 1) {
+        $turno_error = 'El turno seleccionado no es válido.';
+    } elseif (!$fecha_valida || !$hora_valida) {
+        $turno_error = 'Selecciona una fecha futura y una hora válida para el turno.';
+    } elseif (strlen($aviso_admin) > 5000) {
+        $turno_error = 'El aviso al cliente no puede superar los 5000 caracteres.';
+    } else {
+        $turno_existente = mysqli_query($conn, "SELECT id FROM turnos WHERE id=$turno_id AND estado='activo'");
+        if ($turno_existente && mysqli_num_rows($turno_existente) === 1) {
+            $stmt = mysqli_prepare($conn, 'UPDATE turnos SET fecha = ?, hora = ?, aviso_admin = ? WHERE id = ? AND estado = \'activo\'');
+            if ($stmt) {
+                mysqli_stmt_bind_param($stmt, 'sssi', $fecha_turno, $hora_turno, $aviso_admin, $turno_id);
+                if (mysqli_stmt_execute($stmt)) {
+                    $turno_success = 'Se actualizó el turno y el aviso quedó disponible para el cliente en Mis Turnos.';
+                } else {
+                    $turno_error = 'No se pudo actualizar el turno. Inténtalo nuevamente.';
+                }
+                mysqli_stmt_close($stmt);
+            } else {
+                $turno_error = 'No se pudo procesar el cambio del turno. Inténtalo nuevamente.';
+            }
+        } else {
+            $turno_error = 'Solo se pueden reprogramar turnos activos.';
+        }
+    }
+}
+
+// Registrar el diagnóstico de un turno en el historial médico
+if (isset($_POST['guardar_diagnostico'])) {
+    $turno_id = filter_var($_POST['turno_id'] ?? '', FILTER_VALIDATE_INT);
+    $diagnostico = trim((string)($_POST['diagnostico'] ?? ''));
+    $tratamiento = trim((string)($_POST['tratamiento'] ?? ''));
+    $vacunas = trim((string)($_POST['vacunas'] ?? ''));
+    $estudios = trim((string)($_POST['estudios'] ?? ''));
+    $observaciones = trim((string)($_POST['observaciones'] ?? ''));
+    $peso = $_POST['peso'] ?? '';
+
+    if ($turno_id === false || $turno_id < 1) {
+        $turno_error = 'El turno seleccionado no es válido.';
+    } elseif ($diagnostico === '' || $tratamiento === '' || !is_numeric($peso) || !is_finite((float)$peso) || (float)$peso <= 0) {
+        $turno_error = 'Completa el diagnóstico, el tratamiento y un peso válido.';
+    } else {
+        $turno_resultado = mysqli_query($conn, "SELECT id, mascota_id, veterinario_id, fecha, estado FROM turnos WHERE id=$turno_id");
+        $turno = $turno_resultado ? mysqli_fetch_assoc($turno_resultado) : false;
+
+        if (!$turno || $turno['estado'] === 'cancelado' || $turno['fecha'] > $hoy) {
+            $turno_error = 'Solo puedes registrar diagnósticos de turnos realizados.';
+        } else {
+            $diagnostico_existente = mysqli_query($conn, "SELECT id FROM historial_medico WHERE turno_id=$turno_id");
+            if ($diagnostico_existente && mysqli_num_rows($diagnostico_existente) > 0) {
+                $turno_error = 'Este turno ya tiene un diagnóstico registrado.';
+            } else {
+                $peso = (float)$peso;
+                $stmt = mysqli_prepare($conn, 'INSERT INTO historial_medico (turno_id, mascota_id, veterinario_id, fecha, diagnostico, tratamiento, vacunas, estudios, peso, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+                if ($stmt) {
+                    $tipos = 'iii' . 'sssss' . 'd' . 's';
+                    mysqli_stmt_bind_param($stmt, $tipos, $turno_id, $turno['mascota_id'], $turno['veterinario_id'], $turno['fecha'], $diagnostico, $tratamiento, $vacunas, $estudios, $peso, $observaciones);
+                    if (mysqli_begin_transaction($conn)) {
+                        if (mysqli_stmt_execute($stmt) && mysqli_query($conn, "UPDATE turnos SET estado='completado' WHERE id=$turno_id AND estado <> 'cancelado'") && mysqli_commit($conn)) {
+                            $turno_success = 'El diagnóstico quedó guardado en el historial médico de la mascota.';
+                        } else {
+                            mysqli_rollback($conn);
+                            $turno_error = 'No se pudo guardar el diagnóstico. Inténtalo nuevamente.';
+                        }
+                    } else {
+                        $turno_error = 'No se pudo iniciar el registro del diagnóstico. Inténtalo nuevamente.';
+                    }
+                    mysqli_stmt_close($stmt);
+                } else {
+                    $turno_error = 'No se pudo preparar el registro del diagnóstico. Inténtalo nuevamente.';
+                }
+            }
+        }
+    }
+}
+
+// Eliminar veterinario solo si no tiene turnos ni historiales asociados
+if (isset($_POST['eliminar_veterinario'])) {
+    $veterinario_id = filter_var($_POST['veterinario_id'] ?? '', FILTER_VALIDATE_INT);
+
+    if ($veterinario_id === false || $veterinario_id < 1) {
+        $veterinario_error = 'El veterinario seleccionado no es válido.';
+    } else {
+        $stmt = mysqli_prepare($conn, 'SELECT (SELECT COUNT(*) FROM turnos WHERE veterinario_id = ?) + (SELECT COUNT(*) FROM historial_medico WHERE veterinario_id = ?) AS registros');
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'ii', $veterinario_id, $veterinario_id);
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_bind_result($stmt, $cantidad_registros);
+                mysqli_stmt_fetch($stmt);
+                mysqli_stmt_close($stmt);
+
+                if ((int)$cantidad_registros > 0) {
+                    $veterinario_error = 'No se puede eliminar este veterinario porque tiene turnos o historiales médicos asociados. Se conservan esos registros.';
+                } else {
+                    $stmt = mysqli_prepare($conn, 'DELETE FROM veterinarios WHERE id = ?');
+                    if ($stmt) {
+                        mysqli_stmt_bind_param($stmt, 'i', $veterinario_id);
+                        if (mysqli_stmt_execute($stmt) && mysqli_stmt_affected_rows($stmt) === 1) {
+                            $veterinario_success = 'Veterinario eliminado correctamente.';
+                        } else {
+                            $veterinario_error = 'No se pudo eliminar el veterinario. Puede que ya no exista o tenga registros asociados.';
+                        }
+                        mysqli_stmt_close($stmt);
+                    } else {
+                        $veterinario_error = 'No se pudo procesar la eliminación. Inténtalo nuevamente.';
+                    }
+                }
+            } else {
+                mysqli_stmt_close($stmt);
+                $veterinario_error = 'No se pudieron comprobar los registros del veterinario.';
+            }
+        } else {
+            $veterinario_error = 'No se pudo procesar la solicitud de eliminación.';
+        }
+    }
+}
 
 // Agregar producto
 if (isset($_POST['agregar_producto'])) {
@@ -164,6 +303,12 @@ $stats = [
     
     <div class="container">
         <h1 style="color: #ff6b6b;">🔧 Panel de Administración</h1>
+        <?php if ($turno_error): ?>
+            <div class="alert alert-error" role="alert"><?php echo htmlspecialchars($turno_error, ENT_QUOTES, 'UTF-8'); ?></div>
+        <?php endif; ?>
+        <?php if ($turno_success): ?>
+            <div class="alert alert-success" role="status"><?php echo htmlspecialchars($turno_success, ENT_QUOTES, 'UTF-8'); ?></div>
+        <?php endif; ?>
 
         <!-- Tabs -->
         <div style="display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;">
@@ -253,6 +398,12 @@ $stats = [
 
         <!-- Veterinarios Tab -->
         <?php if ($tab == 'veterinarios'): ?>
+            <?php if ($veterinario_error): ?>
+                <div class="alert alert-error" role="alert"><?php echo htmlspecialchars($veterinario_error, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
+            <?php if ($veterinario_success): ?>
+                <div class="alert alert-success" role="status"><?php echo htmlspecialchars($veterinario_success, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php endif; ?>
             <button onclick="document.getElementById('formVet').style.display='block'" class="btn btn-primary mb-20">+ Agregar Veterinario</button>
             
             <div id="formVet" class="card mb-20" style="display: none;">
@@ -277,6 +428,10 @@ $stats = [
                         <h3><?php echo $v['nombre'].' '.$v['apellido']; ?></h3>
                         <p><strong>Especialidad:</strong> <?php echo $v['especialidad']; ?></p>
                         <p><strong>Teléfono:</strong> <?php echo $v['telefono']; ?></p>
+                        <form method="POST" onsubmit="return confirm('¿Eliminar este veterinario? Solo se podrá eliminar si no tiene turnos ni historiales asociados.');">
+                            <input type="hidden" name="veterinario_id" value="<?php echo (int)$v['id']; ?>">
+                            <button type="submit" name="eliminar_veterinario" class="btn btn-danger">Eliminar Veterinario</button>
+                        </form>
                     </div>
                 <?php endwhile; ?>
             </div>
@@ -285,24 +440,86 @@ $stats = [
         <!-- Turnos Tab -->
         <?php if ($tab == 'turnos'): ?>
             <table>
-                <thead><tr><th>Usuario</th><th>Mascota</th><th>Veterinario</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
+                <thead><tr><th>Usuario</th><th>Mascota</th><th>Veterinario</th><th>Fecha</th><th>Hora</th><th>Estado</th><th>Gestión</th></tr></thead>
                 <tbody>
                     <?php
-                    $turnos = mysqli_query($conn, "SELECT t.*, u.nombre as usuario_nombre, m.nombre as mascota_nombre, v.nombre as vet_nombre 
+                    $turnos = mysqli_query($conn, "SELECT t.*, u.nombre as usuario_nombre, u.apellido as usuario_apellido, m.nombre as mascota_nombre, m.peso as mascota_peso, v.nombre as vet_nombre, hm.id as historial_id
                                                     FROM turnos t 
                                                     JOIN usuarios u ON t.usuario_id = u.id 
                                                     JOIN mascotas m ON t.mascota_id = m.id 
                                                     JOIN veterinarios v ON t.veterinario_id = v.id 
+                                                    LEFT JOIN historial_medico hm ON hm.turno_id = t.id
                                                     ORDER BY t.fecha DESC, t.hora DESC");
                     while ($t = mysqli_fetch_assoc($turnos)):
                     ?>
                         <tr>
-                            <td><?php echo $t['usuario_nombre']; ?></td>
-                            <td><?php echo $t['mascota_nombre']; ?></td>
-                            <td><?php echo $t['vet_nombre']; ?></td>
+                            <td><?php echo htmlspecialchars($t['usuario_nombre'].' '.$t['usuario_apellido'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($t['mascota_nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($t['vet_nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($t['fecha'])); ?></td>
-                            <td><?php echo $t['hora']; ?></td>
-                            <td><?php echo $t['estado']; ?></td>
+                            <td><?php echo htmlspecialchars(substr($t['hora'], 0, 5), ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($t['estado'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td>
+                                <?php if ($t['estado'] === 'activo'): ?>
+                                    <details>
+                                        <summary>Reprogramar / avisar</summary>
+                                        <form method="POST" class="card">
+                                            <input type="hidden" name="turno_id" value="<?php echo (int)$t['id']; ?>">
+                                            <div class="form-group">
+                                                <label class="form-label">Nueva fecha</label>
+                                                <input type="date" name="fecha_turno" class="form-input" min="<?php echo $fecha_minima_turno; ?>" value="<?php echo htmlspecialchars($t['fecha'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Nuevo horario</label>
+                                                <input type="time" name="hora_turno" class="form-input" value="<?php echo htmlspecialchars(substr($t['hora'], 0, 5), ENT_QUOTES, 'UTF-8'); ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Aviso para el cliente</label>
+                                                <textarea name="aviso_admin" class="form-textarea" maxlength="5000" placeholder="El cliente podrá leer este aviso en Mis Turnos"><?php echo htmlspecialchars($t['aviso_admin'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
+                                            </div>
+                                            <button type="submit" name="actualizar_turno" class="btn btn-primary">Guardar cambio y aviso</button>
+                                        </form>
+                                    </details>
+                                <?php endif; ?>
+
+                                <?php if ($t['historial_id']): ?>
+                                    <p><strong>Diagnóstico registrado</strong></p>
+                                <?php elseif ($t['fecha'] <= $hoy && $t['estado'] !== 'cancelado'): ?>
+                                    <details>
+                                        <summary>Registrar diagnóstico</summary>
+                                        <form method="POST" class="card">
+                                            <input type="hidden" name="turno_id" value="<?php echo (int)$t['id']; ?>">
+                                            <div class="form-group">
+                                                <label class="form-label">Diagnóstico</label>
+                                                <textarea name="diagnostico" class="form-textarea" required></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Tratamiento</label>
+                                                <textarea name="tratamiento" class="form-textarea" required></textarea>
+                                            </div>
+                                            <div class="grid grid-2">
+                                                <div class="form-group">
+                                                    <label class="form-label">Vacunas</label>
+                                                    <textarea name="vacunas" class="form-textarea"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Estudios</label>
+                                                    <textarea name="estudios" class="form-textarea"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Peso (kg)</label>
+                                                    <input type="number" name="peso" class="form-input" min="0.01" step="0.01" value="<?php echo htmlspecialchars((string)$t['mascota_peso'], ENT_QUOTES, 'UTF-8'); ?>" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Observaciones</label>
+                                                    <textarea name="observaciones" class="form-textarea"></textarea>
+                                                </div>
+                                            </div>
+                                            <button type="submit" name="guardar_diagnostico" class="btn btn-success">Guardar en historial médico</button>
+                                        </form>
+                                    </details>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
