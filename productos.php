@@ -474,9 +474,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
     </div>
 
 
-    <!-- =====================================================
+    <!-- 
          MENSAJE DE COMPRA
-         ===================================================== -->
+          -->
 
     <?php if(isset($success)): ?>
 
@@ -489,9 +489,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
     <?php endif; ?>
 
 
-    <!-- =====================================================
+    <!-- 
          FILTROS
-         ===================================================== -->
+          -->
 
     <div class="filtros">
 
@@ -517,9 +517,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
     </div>
 
 
-    <!-- =====================================================
+    <!--
          PRODUCTOS
-         ===================================================== -->
+         -->
 
     <div class="grid grid-3">
 
@@ -712,9 +712,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
 
 
 
-<!-- =====================================================
-     CARRITO OVERLAY
-     ===================================================== -->
+<!-- 
+     CARRITO 
+      -->
 
 <div id="carritoOverlay"
      style="
@@ -1049,9 +1049,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
 
 
 
-<!-- =====================================================
+<!-- 
      JAVASCRIPT DEL CARRITO
-     ===================================================== -->
+     -->
 
 <script>
 
@@ -1084,9 +1084,9 @@ function toggleCarrito() {
 
 
 
-<!-- =====================================================
-     JAVASCRIPT DE ANIMACIÓN AL HACER SCROLL
-     ===================================================== -->
+<!-- 
+     JAVASCRIPT DE ANIMACIoN AL HACER SCROLL
+      -->
 
 <script>
 
@@ -1132,9 +1132,9 @@ productosAnimados.forEach((producto) => {
 
 
 
-<!-- =====================================================
+<!-- 
      RESPONSIVE
-     ===================================================== -->
+      -->
 
 <style>
 
