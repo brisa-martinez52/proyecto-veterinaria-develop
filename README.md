@@ -16,7 +16,7 @@ A través del sistema, los usuarios pueden acceder a los servicios de forma más
 
 
 
-Tecnologías utilizadas
+TECNOLOGÍAS UTILIZADAS
 
 Frontend
 
@@ -38,7 +38,7 @@ MySQL: utilizado para almacenar y gestionar la información del sistema.
 
 
 
-Herramientas utilizadas
+HERRAMIENTAS UTILIZADAS
 
 XAMPP: utilizado como servidor local para ejecutar Apache y MySQL durante el desarrollo.
 
@@ -52,7 +52,7 @@ GitHub: utilizado para almacenar el repositorio y trabajar de forma colaborativa
 
 
 
-Requisitos para la ejecución
+REQUISITOS PARA LA EJECUCIÓN
 
 Para ejecutar el proyecto en un entorno local se requiere:
 
@@ -68,7 +68,7 @@ Git (opcional, para clonar el repositorio).
 
 
 
-Instalación
+INSTALACIÓN
 
 Clonar el repositorio:
 
@@ -86,7 +86,7 @@ Importar el archivo SQL incluido en el proyecto.
 
 
 
-Ejecución
+EJECUCIÓN
 
 Iniciar Apache y MySQL desde XAMPP.
 
@@ -100,7 +100,7 @@ El sistema estará listo para utilizarse.
 
 
 
-Credenciales de acceso al panel de administración
+CREDENCIALES DE ACCESO AL PANEL DE ADMINISTRACIÓN
 
 Utilizar las siguientes credenciales predeterminadas:
 
