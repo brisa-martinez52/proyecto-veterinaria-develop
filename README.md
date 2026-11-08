@@ -72,7 +72,7 @@ INSTALACIÓN
 
 Clonar el repositorio:
 
-git clone https://github.com/usuario/veterinaria-patitas-develop.git
+git clone https://github.com/usuario/proyecto-veterinaria-develop.git
 
 Copiar la carpeta del proyecto dentro del directorio:
 
@@ -94,7 +94,7 @@ Abrir un navegador web.
 
 Acceder a la siguiente dirección:
 
-[http://localhost/veterinaria-patitas-develop](http://localhost/proyecto-veterinaria-develop/)
+[http://localhost/proyecto-veterinaria-develop](http://localhost/proyecto-veterinaria-develop/)
 
 El sistema estará listo para utilizarse.
 
