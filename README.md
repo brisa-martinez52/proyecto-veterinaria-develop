@@ -16,27 +16,45 @@ A través del sistema, los usuarios pueden acceder a los servicios de forma más
 Tecnologías utilizadas
 Frontend
 HTML5: utilizado para estructurar el contenido de las páginas.
+
+
 CSS3: utilizado para diseñar y dar estilo a la interfaz.
+
+
 JavaScript: utilizado para agregar interactividad y funcionalidades dinámicas.
+
+
 Backend
 PHP: utilizado para desarrollar la lógica del sistema y conectar la página con la base de datos.
+
 Base de Datos
 MySQL: utilizado para almacenar y gestionar la información del sistema.
+
 Herramientas utilizadas
 XAMPP: utilizado como servidor local para ejecutar Apache y MySQL durante el desarrollo.
+
 phpMyAdmin: utilizado para administrar la base de datos.
+
 Visual Studio Code: utilizado como editor de código.
+
 Git: utilizado para el control de versiones del proyecto.
+
 GitHub: utilizado para almacenar el repositorio y trabajar de forma colaborativa.
+
 Requisitos para la ejecución
 
 Para ejecutar el proyecto en un entorno local se requiere:
 
 XAMPP versión 8.0 o superior.
+
 PHP 8.0 o superior.
+
 MySQL 5.7 o superior.
+
 Navegador web actualizado (Google Chrome, Microsoft Edge o Mozilla Firefox).
+
 Git (opcional, para clonar el repositorio).
+
 Instalación
 Clonar el repositorio:
 git clone https://github.com/usuario/veterinaria-patitas-develop.git
