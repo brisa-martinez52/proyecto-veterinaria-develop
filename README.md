@@ -39,7 +39,7 @@ Navegador web actualizado (Google Chrome, Microsoft Edge o Mozilla Firefox).
 Git (opcional, para clonar el repositorio).
 Instalación
 Clonar el repositorio:
-git clone https://github.com/usuario/veterinaria-patitas.git
+git clone https://github.com/usuario/veterinaria-patitas-develop.git
 
 Copiar la carpeta del proyecto dentro del directorio:
 xampp/htdocs/
@@ -56,7 +56,7 @@ Ejecución
 Iniciar Apache y MySQL desde XAMPP.
 Abrir un navegador web.
 Acceder a la siguiente dirección:
-[http://localhost/veterinaria-patitas](http://localhost/proyecto-veterinaria-develop/)
+[http://localhost/veterinaria-patitas-develop](http://localhost/proyecto-veterinaria-develop/)
 El sistema estará listo para utilizarse.
 
 Credenciales de acceso al panel de administración
