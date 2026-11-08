@@ -15,6 +15,7 @@ El objetivo del proyecto es desarrollar una plataforma web que permita mejorar l
 A través del sistema, los usuarios pueden acceder a los servicios de forma más rápida y organizada, mientras que el administrador cuenta con herramientas para gestionar la información del sitio.
 
 
+
 Tecnologías utilizadas
 
 Frontend
@@ -27,18 +28,18 @@ CSS3: utilizado para diseñar y dar estilo a la interfaz.
 
 JavaScript: utilizado para agregar interactividad y funcionalidades dinámicas.
 
-
 Backend
 
 PHP: utilizado para desarrollar la lógica del sistema y conectar la página con la base de datos.
-
 
 Base de Datos
 
 MySQL: utilizado para almacenar y gestionar la información del sistema.
 
 
+
 Herramientas utilizadas
+
 XAMPP: utilizado como servidor local para ejecutar Apache y MySQL durante el desarrollo.
 
 phpMyAdmin: utilizado para administrar la base de datos.
@@ -48,6 +49,7 @@ Visual Studio Code: utilizado como editor de código.
 Git: utilizado para el control de versiones del proyecto.
 
 GitHub: utilizado para almacenar el repositorio y trabajar de forma colaborativa.
+
 
 
 Requisitos para la ejecución
@@ -63,6 +65,7 @@ MySQL 5.7 o superior.
 Navegador web actualizado (Google Chrome, Microsoft Edge o Mozilla Firefox).
 
 Git (opcional, para clonar el repositorio).
+
 
 
 Instalación
@@ -82,6 +85,7 @@ Crear una base de datos en phpMyAdmin, con el nombre "veterinaria_patitas".
 Importar el archivo SQL incluido en el proyecto.
 
 
+
 Ejecución
 
 Iniciar Apache y MySQL desde XAMPP.
@@ -93,6 +97,7 @@ Acceder a la siguiente dirección:
 [http://localhost/veterinaria-patitas-develop](http://localhost/proyecto-veterinaria-develop/)
 
 El sistema estará listo para utilizarse.
+
 
 
 Credenciales de acceso al panel de administración
