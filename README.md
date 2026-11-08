@@ -56,10 +56,13 @@ Navegador web actualizado (Google Chrome, Microsoft Edge o Mozilla Firefox).
 Git (opcional, para clonar el repositorio).
 
 Instalación
+
 Clonar el repositorio:
+
 git clone https://github.com/usuario/veterinaria-patitas-develop.git
 
 Copiar la carpeta del proyecto dentro del directorio:
+
 xampp/htdocs/
 
 
@@ -71,16 +74,23 @@ Importar el archivo SQL incluido en el proyecto.
 
 
 Ejecución
+
 Iniciar Apache y MySQL desde XAMPP.
+
 Abrir un navegador web.
+
 Acceder a la siguiente dirección:
+
 [http://localhost/veterinaria-patitas-develop](http://localhost/proyecto-veterinaria-develop/)
+
 El sistema estará listo para utilizarse.
 
 Credenciales de acceso al panel de administración
+
 Utilizar las siguientes credenciales predeterminadas:
 
 DNI: admin
+
 Contraseña: admin123
 
 Nota: Estas credenciales fueron creadas únicamente para fines de prueba y evaluación del proyecto.
