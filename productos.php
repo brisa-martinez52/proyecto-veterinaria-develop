@@ -146,9 +146,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           FILTROS
-           ===================================================== */
+        /* FILTROS */
 
         .filtros {
             display: flex;
@@ -182,9 +180,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           TARJETAS DE PRODUCTOS
-           ===================================================== */
+        /*  TARJETAS DE PRODUCTOS */
 
         .producto-card {
             background-color: white;
@@ -199,9 +195,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           ANIMACIÓN AL HACER SCROLL
-           ===================================================== */
+        /* ANIMACIÓN AL HACER SCROLL*/
 
         .producto-scroll {
             opacity: 0;
@@ -241,9 +235,9 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
+        /* 
            IMAGEN DEL PRODUCTO
-           ===================================================== */
+            */
 
         .producto-imagen {
             width: 100%;
@@ -255,9 +249,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           INFORMACIÓN DEL PRODUCTO
-           ===================================================== */
+        /* INFORMACIoN DEL PRODUCTO */
 
         .producto-nombre {
             margin: 5px 0 8px;
@@ -285,9 +277,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           PRECIO Y STOCK
-           ===================================================== */
+        /* PRECIO Y STOCK */
 
         .producto-info {
             display: flex;
@@ -327,9 +317,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           BOTÓN CARRITO
-           ===================================================== */
+        /* BOToN CARRITO */
 
         .btn-carrito {
             width: 100%;
@@ -350,9 +338,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           BOTÓN DEL CARRITO SUPERIOR
-           ===================================================== */
+        /* BOTON DEL CARRITO SUPERIOR */
 
         .carrito-boton {
             display: flex;
@@ -379,9 +365,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           ELIMINAR DEL CARRITO
-           ===================================================== */
+        /* ELIMINAR DEL CARRITO*/
 
         .eliminar-carrito {
             background: none;
@@ -398,9 +382,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
         }
 
 
-        /* =====================================================
-           RESPONSIVE
-           ===================================================== */
+        /* RESPONSIVE*/
 
         @media (max-width: 768px) {
 
@@ -432,9 +414,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
 <div class="container">
 
 
-    <!-- =====================================================
-         ENCABEZADO
-         ===================================================== -->
+    <!--  ENCABEZADO INICIO PROD-->
 
     <div class="productos-header">
 
@@ -733,9 +713,7 @@ $categorias_result = mysqli_query($conn, $query_cat);
 
 
 
-<!-- =====================================================
-     CARRITO SIDEBAR
-     ===================================================== -->
+<!-- CARRITO SIDEBAR -->
 
 <div id="carritoSidebar"
      style="

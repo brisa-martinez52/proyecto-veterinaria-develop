@@ -16,9 +16,7 @@ require_once 'includes/config.php';
 
     <style>
 
-        /* =====================================================
-           ANIMACIONES AL HACER SCROLL
-           ===================================================== */
+        /* ANIMACIONES AL HACER SCROLL===================================================== */
 
         .scroll-animado {
             opacity: 0;
@@ -107,9 +105,7 @@ require_once 'includes/config.php';
         }
 
 
-        /* =====================================================
-           ESTILOS DE SERVICIOS
-           ===================================================== */
+        /*  ESTILOS DE SERVICIOS */
 
         .servicio-card {
             text-align: center;
@@ -139,9 +135,7 @@ require_once 'includes/config.php';
         }
 
 
-        /* =====================================================
-           CONTACTO
-           ===================================================== */
+        /* CONTACTO */
 
         .contact-info {
             transition:
@@ -155,9 +149,7 @@ require_once 'includes/config.php';
         }
 
 
-        /* =====================================================
-           RESPONSIVE
-           ===================================================== */
+        /* RESPONSIVE */
 
         @media (max-width: 768px) {
 
@@ -202,9 +194,7 @@ require_once 'includes/config.php';
     <?php include 'includes/navbar.php'; ?>
 
 
-    <!-- =====================================================
-         HERO
-         ===================================================== -->
+    <!-- HERO -->
 
     <div class="hero-section"
          style="
@@ -381,9 +371,7 @@ require_once 'includes/config.php';
 
 
 
-    <!-- =====================================================
-         INFORMACIÓN DE CONTACTO
-         ===================================================== -->
+    <!-- INFORMACION DE CONTACTO -->
 
     <div class="info-section scroll-animado"
          style="padding: 60px 20px;">
@@ -421,9 +409,7 @@ require_once 'includes/config.php';
 
 
 
-    <!-- =====================================================
-         SERVICIOS
-         ===================================================== -->
+    <!-- SERVICIOS-->
 
     <div class="features-section"
          style="
@@ -534,9 +520,7 @@ require_once 'includes/config.php';
 
 
 
-    <!-- =====================================================
-         JAVASCRIPT PARA ANIMACIONES
-         ===================================================== -->
+    <!-- JAVASCRIPT -->
 
     <script>
 
@@ -575,4 +559,4 @@ require_once 'includes/config.php';
 
 </body>
 </html>
-```
+
